@@ -72,7 +72,9 @@ int CClassView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	rectDummy.SetRectEmpty();
 
 	// Create views:
-	const DWORD dwViewStyle = WS_CHILD | WS_VISIBLE | TVS_HASLINES | TVS_LINESATROOT | TVS_HASBUTTONS | WS_CLIPSIBLINGS | WS_CLIPCHILDREN;
+	const DWORD dwViewStyle = WS_CHILD | WS_VISIBLE | TVS_HASLINES | TVS_LINESATROOT | TVS_HASBUTTONS |
+		TVS_CHECKBOXES |
+		WS_CLIPSIBLINGS | WS_CLIPCHILDREN;
 
 	if (!m_wndClassView.Create(dwViewStyle, rectDummy, this, 2))
 	{
@@ -125,6 +127,14 @@ void CClassView::FillClassView()
 {
 	HTREEITEM hRoot = m_wndClassView.InsertItem(_T("FakeApp classes"), 0, 0);
 	m_wndClassView.SetItemState(hRoot, TVIS_BOLD, TVIS_BOLD);
+	m_wndClassView.SetItemState(hRoot, INDEXTOSTATEIMAGEMASK(1), TVIS_STATEIMAGEMASK);
+	/*TVITEM tvi;
+	tvi.hItem = hRoot;
+	tvi.mask = TVIF_STATE;
+	tvi.stateMask = TVIS_STATEIMAGEMASK;
+	tvi.state = INDEXTOSTATEIMAGEMASK(2);
+	m_wndClassView.SetItem(&tvi);*/
+
 
 	HTREEITEM hClass = m_wndClassView.InsertItem(_T("CFakeAboutDlg"), 1, 1, hRoot);
 	m_wndClassView.InsertItem(_T("CFakeAboutDlg()"), 3, 3, hClass);

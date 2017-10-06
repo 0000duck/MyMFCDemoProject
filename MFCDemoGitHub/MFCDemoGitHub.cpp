@@ -11,6 +11,7 @@
 #include "ChildFrm.h"
 #include "MFCDemoGitHubDoc.h"
 #include "MFCDemoGitHubView.h"
+#include <bitset>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -72,6 +73,12 @@ BOOL CMFCDemoGitHubApp::InitInstance()
 	InitCommonControlsEx(&InitCtrls);
 
 	CWinAppEx::InitInstance();
+
+	std::bitset<16> foo;
+	std::bitset<16> bar(0xfa2);
+	std::bitset<16> baz(std::string("0101111001"));
+	//std::cout << "foo: " << foo << '\n';
+	//std::cout << "bar: " << bar << '\n';
 
 
 	// Initialize OLE libraries

@@ -189,6 +189,7 @@
     <ClInclude Include="ClassView.h" />
     <ClInclude Include="FileView.h" />
     <ClInclude Include="MainFrm.h" />
+    <ClInclude Include="MemDC.h" />
     <ClInclude Include="MFCDemoGitHub.h" />
     <ClInclude Include="MFCDemoGitHubDoc.h" />
     <ClInclude Include="MFCDemoGitHubView.h" />
