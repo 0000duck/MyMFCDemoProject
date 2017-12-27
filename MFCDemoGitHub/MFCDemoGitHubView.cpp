@@ -28,6 +28,9 @@ BEGIN_MESSAGE_MAP(CMFCDemoGitHubView, CView)
 	ON_COMMAND(ID_FILE_PRINT_PREVIEW, &CMFCDemoGitHubView::OnFilePrintPreview)
 	ON_WM_CONTEXTMENU()
 	ON_WM_RBUTTONUP()
+	ON_WM_LBUTTONUP()
+	ON_WM_LBUTTONDOWN()
+	ON_WM_MOUSEMOVE()
 END_MESSAGE_MAP()
 
 // CMFCDemoGitHubView construction/destruction
@@ -48,6 +51,39 @@ BOOL CMFCDemoGitHubView::PreCreateWindow(CREATESTRUCT& cs)
 	//  the CREATESTRUCT cs
 
 	return CView::PreCreateWindow(cs);
+}
+
+void CMFCDemoGitHubView::OnInitialUpdate()
+{
+	CView::OnInitialUpdate();
+	if (m_ToolTipCtrl.Create(this, TTS_ALWAYSTIP) && m_ToolTipCtrl.AddTool(this))
+	{
+		m_ToolTipCtrl.SendMessage(TTM_SETMAXTIPWIDTH, 0, SHRT_MAX);
+		//m_ToolTipCtrl.SendMessage(TTM_SETDELAYTIME, TTDT_AUTOPOP, SHRT_MAX);
+		//m_ToolTipCtrl.SendMessage(TTM_SETDELAYTIME, TTDT_INITIAL, (int)(0.01 * 1000));
+		//m_ToolTipCtrl.SendMessage(TTM_SETDELAYTIME, TTDT_RESHOW, 100);
+	}
+}
+
+BOOL CMFCDemoGitHubView::PreTranslateMessage(MSG * pMsg)
+{
+	if (::IsWindow(m_ToolTipCtrl.m_hWnd) && pMsg->hwnd == m_hWnd)
+	{
+		switch (pMsg->message)
+		{
+		case WM_LBUTTONDOWN:
+		case WM_MOUSEMOVE:
+		case WM_LBUTTONUP:
+		case WM_RBUTTONDOWN:
+		case WM_MBUTTONDOWN:
+		case WM_RBUTTONUP:
+		case WM_MBUTTONUP:
+			m_ToolTipCtrl.RelayEvent(pMsg);
+			break;
+		}
+	}
+
+	return __super ::PreTranslateMessage(pMsg);
 }
 
 // CMFCDemoGitHubView drawing
@@ -93,6 +129,24 @@ void CMFCDemoGitHubView::OnRButtonUp(UINT /* nFlags */, CPoint point)
 {
 	ClientToScreen(&point);
 	OnContextMenu(this, point);
+}
+
+void CMFCDemoGitHubView::OnLButtonUp(UINT nFlags, CPoint point)
+{
+	m_ToolTipCtrl.Activate(FALSE);
+}
+
+void CMFCDemoGitHubView::OnLButtonDown(UINT nFlags, CPoint point)
+{
+	m_ToolTipCtrl.Activate(TRUE);
+	m_ToolTipCtrl.UpdateTipText(_T("Tooltip Show Up and Start Tracking"), this);
+}
+
+void CMFCDemoGitHubView::OnMouseMove(UINT nFlags, CPoint point)
+{
+	CString strText;
+	strText.Format(_T("Position: X %d, Y %d"), point.x, point.y);
+	m_ToolTipCtrl.UpdateTipText(strText, this);
 }
 
 void CMFCDemoGitHubView::OnContextMenu(CWnd* /* pWnd */, CPoint point)

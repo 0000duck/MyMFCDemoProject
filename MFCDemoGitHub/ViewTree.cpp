@@ -67,8 +67,11 @@ void CViewTree::OnPaint()
 	CPaintDC dc(this);
 
 	// Paint to a memory device context to reduce screen flicker.
-	CGstMemDC memDC(&dc, &rectClient);
-
+	//CGstMemDC memDC(&dc, &rectClient);
+	
 	// Let the window do its default painting...
-	CTreeCtrl::DefWindowProc(WM_PAINT, (WPARAM)memDC.m_hDC, 0);
+	//CTreeCtrl::DefWindowProc(WM_PAINT, (WPARAM)memDC.m_hDC, 0);
+
+	CMemDC memDC(dc, rectClient);
+	CTreeCtrl::DefWindowProc(WM_PAINT, (WPARAM)memDC.GetDC().GetSafeHdc(), 0);
 }

@@ -4,6 +4,7 @@
 
 #pragma once
 
+class CMFCDemoGitHubDoc;
 
 class CMFCDemoGitHubView : public CView
 {
@@ -14,6 +15,7 @@ protected: // create from serialization only
 // Attributes
 public:
 	CMFCDemoGitHubDoc* GetDocument() const;
+	CToolTipCtrl	m_ToolTipCtrl;
 
 // Operations
 public:
@@ -26,6 +28,8 @@ protected:
 	virtual BOOL OnPreparePrinting(CPrintInfo* pInfo);
 	virtual void OnBeginPrinting(CDC* pDC, CPrintInfo* pInfo);
 	virtual void OnEndPrinting(CDC* pDC, CPrintInfo* pInfo);
+	virtual void OnInitialUpdate(); // called first time after construct
+	virtual BOOL PreTranslateMessage(MSG* pMsg);
 
 // Implementation
 public:
@@ -41,6 +45,9 @@ protected:
 protected:
 	afx_msg void OnFilePrintPreview();
 	afx_msg void OnRButtonUp(UINT nFlags, CPoint point);
+	afx_msg void OnLButtonUp(UINT nFlags, CPoint point);
+	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
+	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
 	afx_msg void OnContextMenu(CWnd* pWnd, CPoint point);
 	DECLARE_MESSAGE_MAP()
 };
